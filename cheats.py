@@ -8,6 +8,7 @@ class CHEATS:
         self.pm = pm
         self.client = client
 
+        #offsets
         offsets = requests.get('https://raw.githubusercontent.com/a2x/cs2-dumper/main/output/offsets.json').json()
         client_dll = requests.get('https://raw.githubusercontent.com/a2x/cs2-dumper/main/output/client_dll.json').json()
 
@@ -68,10 +69,12 @@ class CHEATS:
                     if not entity_pawn:
                         continue
 
+                    #checking is player alive
                     life_state = self.pm.read_int(entity_pawn + self.m_lifeState)
                     if life_state != 256:
                         continue
 
+                    # checking is player in your team
                     if self.pm.read_int(entity_pawn + self.m_iTeamNum) == local_team:
                         continue
 
@@ -83,10 +86,9 @@ class CHEATS:
                     self.pm.write_bool(glow + self.m_bGlowing, True)
                     self.pm.write_int(glow + self.m_iGlowType, 4)
 
-                time.sleep(0.01)
             except Exception as e:
                 print(f"ESP error: {e}")
-                time.sleep(1)
+                time.sleep(0.1)
 
     def anti_flash(self, enabled=True):
         while enabled:
